@@ -1,0 +1,13 @@
+---
+machine:
+  ruby:
+    version: 2.2
+
+dependencies:
+  override:
+    - bundle install --path=vendor/bundle:
+      
+test:
+  override:
+    - bundle exec kitchen test:
+        pwd: integration-test

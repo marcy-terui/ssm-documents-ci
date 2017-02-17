@@ -1,0 +1,19 @@
+#! /usr/bin/env ruby
+
+Command "Test-RunShellScript" do
+  account_ids []
+  content do
+    __dsl do
+      schemaVersion "2.0"
+      description "Run a shell script."
+      mainSteps do |*|
+        action "aws:runShellScript"
+        name "runShellScript"
+        inputs do
+          commands ["echo 1"]
+        end
+      end
+    end
+  end
+
+end
