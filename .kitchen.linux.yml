@@ -10,7 +10,7 @@ provisioner:
   sleep: 10
 
 transport:
-  ssh_key: <%= Dir.glob("#{ENV['HOME']}/id_*").first %>
+  ssh_key: <%= Dir.glob("#{ENV['HOME']}/.ssh/id_*").select {|a| File.basename(a) =~ /^id_[a-z0-9]+$/}.first %>
 
 platforms:
   - name: amazon-2016.09.1
