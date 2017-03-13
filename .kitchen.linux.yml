@@ -17,10 +17,10 @@ platforms:
       image_id: ami-56d4ad31
       user_data: |
         #!/bin/bash
+        curl -L https://omnitruck.chef.io/install.sh | sudo bash
         cd /tmp
         curl https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm -o amazon-ssm-agent.rpm
         yum install -y amazon-ssm-agent.rpm
-        curl -L https://omnitruck.chef.io/install.sh | sudo bash
     transport:
       username: ec2-user
 suites:
