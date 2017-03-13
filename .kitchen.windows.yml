@@ -10,7 +10,7 @@ provisioner:
 
 transport:
   name: winrm
-  ssh_key: <%= Dir.glob("#{ENV['HOME']}/.ssh/id_*").select {|a| File.basename(a) =~ /^id_[a-z0-9]+$/}.first %>
+  ssh_key: <%= "#{ENV['HOME']}/.ssh/id_default" %>
 
 platforms:
   - name: windows-2012r2

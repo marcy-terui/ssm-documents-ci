@@ -7,10 +7,9 @@ driver:
 
 provisioner:
   name: local_shell
-  sleep: 10
 
 transport:
-  ssh_key: <%= Dir.glob("#{ENV['HOME']}/.ssh/id_*").select {|a| File.basename(a) =~ /^id_[a-z0-9]+$/}.first %>
+  ssh_key: <%= "#{ENV['HOME']}/.ssh/id_default" %>
 
 platforms:
   - name: amazon-2016.09.1
