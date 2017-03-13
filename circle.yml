@@ -3,11 +3,15 @@ machine:
   ruby:
     version: 2.2
 
-dependencies:
-  override:
-    - bundle install --path=vendor/bundle:
-      
 test:
   override:
-    - bundle exec kitchen test:
-        pwd: integration-test
+    - bundle exec rake comment_diff
+    - REZEPT_ENV=test bundle exec rezept apply --prefix "Test-"
+    - KITCHEN_YAML=.kitchen.linux.yml bundle exec kitchen test
+    - KITCHEN_YAML=.kitchen.windows.yml bundle exec kitchen test
+
+deployment:
+  master:
+    branch: master
+    commands:
+      - bundle exec rezept apply

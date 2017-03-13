@@ -1,19 +1,43 @@
 #! /usr/bin/env ruby
 
-Command "Test-RunShellScript" do
+PREFIX = ENV['REZEPT_ENV'] == 'test' ? 'Test-' : ''
+
+Command "#{PREFIX}Example-RunShellScript" do
   account_ids []
   content do
     __dsl do
       schemaVersion "2.0"
-      description "Run a shell script."
+      description "Run a shell script"
       mainSteps do |*|
         action "aws:runShellScript"
         name "runShellScript"
         inputs do
-          commands ["echo 1"]
+          runCommand __script(<<-'EOS')
+echo example >> /tmp/result.txt
+EOS
+          TimeoutSeconds 10
         end
       end
     end
   end
+end
 
+Command "#{PREFIX}Example-RunPowerShellScript" do
+  account_ids []
+  content do
+    __dsl do
+      schemaVersion "2.0"
+      description "Run a shell script"
+      mainSteps do |*|
+        action "aws:runPowerShellScript"
+        name "runPowerShellScript"
+        inputs do
+          runCommand __script(<<-'EOS')
+"example" >> C:\result.txt
+EOS
+          TimeoutSeconds 100
+        end
+      end
+    end
+  end
 end

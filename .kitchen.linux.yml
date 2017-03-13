@@ -1,0 +1,32 @@
+---
+driver:
+  name: ec2
+  region: <%= ENV['AWS_REGION'] %>
+  aws_ssh_key_id: swx-test-tokyo
+  iam_profile_name: AmazonEC2RoleforSSM
+
+provisioner:
+  name: local_shell
+  sleep: 10
+
+transport:
+  ssh_key: ~/.ssh/swx-test-tokyo.pem
+
+platforms:
+  # - name: ubuntu-14.04
+  # - name: centos-7.2
+  - name: amazon-2016.09.1
+    driver:
+      image_id: ami-56d4ad31
+      user_data: |
+        #!/bin/bash
+        cd /tmp
+        curl https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm -o amazon-ssm-agent.rpm
+        yum install -y amazon-ssm-agent.rpm
+        curl -L https://omnitruck.chef.io/install.sh | sudo bash
+    transport:
+      username: ec2-user
+suites:
+  - name: linux-example
+    provisioner:
+      command: 'bundle exec rezept run_command -d Example-RunShellScript -i $KITCHEN_SERVER_ID --wait-results --wait-entries'

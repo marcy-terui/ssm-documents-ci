@@ -1,0 +1,41 @@
+---
+driver:
+  name: ec2
+  region: <%= ENV['AWS_REGION'] %>
+  aws_ssh_key_id: swx-test-tokyo
+  iam_profile_name: AmazonEC2RoleforSSM
+
+provisioner:
+  name: local_shell
+
+transport:
+  name: winrm
+  ssh_key: ~/.ssh/swx-test-tokyo.pem
+
+platforms:
+  - name: windows-2012r2
+    driver:
+      user_data: |
+        <powershell>
+          Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Force
+          Enable-PSRemoting @enableArgs
+          & winrm.cmd set winrm/config '@{MaxTimeoutms="1800000"}'
+          & winrm.cmd set winrm/config/winrs '@{MaxMemoryPerShellMB="1024"}'
+          & winrm.cmd set winrm/config/winrs '@{MaxShellsPerUser="50"}'
+          & winrm.cmd set winrm/config/winrs '@{MaxMemoryPerShellMB="1024"}'
+          & netsh advfirewall firewall set rule name="Windows Remote Management (HTTP-In)" profile=public protocol=tcp localport=5985 remoteip=localsubnet new remoteip=any
+          Invoke-WebRequest -Uri https://packages.chef.io/files/stable/chef/12.19.36/windows/2012/chef-client-12.19.36-1-x64.msi -OutFile C:\chef-client.msi
+          Start-Process -FilePath msiexec.exe -ArgumentList "/qn /i C:\chef-client.msi ADDLOCAL=ChefClientFeature" -Wait -Passthru
+          Invoke-WebRequest -Uri https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/windows_amd64/AmazonSSMAgentSetup.exe -OutFile C:\AmazonSSMAgentSetup.exe
+          Start-Process -FilePath "C:\AmazonSSMAgentSetup.exe" -ArgumentList @('ALLOWEC2INSTALL=YES', '/install', '/norstart', '/quiet') -Wait | Out-Null
+          Restart-Service -Name AmazonSSMAgent
+          $enableArgs=@{Force=$true}
+          $command=Get-Command Enable-PSRemoting
+          if($command.Parameters.Keys -contains "skipnetworkprofilecheck"){
+              $enableArgs.skipnetworkprofilecheck=$true
+          }
+        </powershell>
+suites:
+  - name: windows-example
+    provisioner:
+      command: 'bundle exec rezept run_command -d Example-RunPowerShellScript -i $KITCHEN_SERVER_ID --wait-results --wait-entries'
