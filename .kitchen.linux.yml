@@ -10,7 +10,7 @@ provisioner:
   sleep: 10
 
 transport:
-  ssh_key: ~/.ssh/swx-test-tokyo.pem
+  # ssh_key: ~/.ssh/swx-test-tokyo.pem
 
 platforms:
   - name: amazon-2016.09.1
