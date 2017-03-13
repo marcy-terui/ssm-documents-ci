@@ -1,5 +1,8 @@
 require "open3"
 
+p ENV
+p `ls -l $HOME/.ssh/`
+
 desc "Put diff comment to Pull request"
 task :comment_diff do
   if ENV['CI_PULL_REQUEST'] ~= /([0-9]*)$/
@@ -16,7 +19,7 @@ EOS
     RestClient.post(
       "https://api.github.com/repos/#{ENV['CIRCLE_PROJECT_USERNAME']}/#{ENV['CIRCLE_PROJECT_REPONAME']}/issues/#{pr_num}/comments",
       JSON.generate({body: comment}),
-      {content_type: :json, :authorization: "token #{ENV['GITHUB_ACCESS_TOKEN']}"}
+      {content_type: :json, authorization: "token #{ENV['GITHUB_ACCESS_TOKEN']}"}
     )
     puts "Put the comment to pull-request \##{pr_num}."
   else
