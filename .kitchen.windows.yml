@@ -10,7 +10,7 @@ provisioner:
 
 transport:
   name: winrm
-  # ssh_key: ~/.ssh/swx-test-tokyo.pem
+  ssh_key: <%= Dir.glob("#{ENV['HOME']}/id_*").first %>
 
 platforms:
   - name: windows-2012r2
