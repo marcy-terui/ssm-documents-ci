@@ -1,8 +1,6 @@
 require "open3"
 require "rest-client"
-
-p ENV
-p `ls -l $HOME/.ssh/`
+require "json"
 
 desc "Put diff comment to Pull request"
 task :comment_diff do
@@ -10,7 +8,7 @@ task :comment_diff do
     pr_num = $1
     out, _ = Open3.capture2e('bundle exec rezept apply --dry-run')
     comment = <<-EOS
-`bundle exec rezept apply --dry-run`
+`bundle exec rezept apply --dry-run --no-color`
 
 ```diff
 #{out}

@@ -13,7 +13,7 @@ Command "#{PREFIX}Example-RunShellScript" do
         name "runShellScript"
         inputs do
           runCommand __script(<<-'EOS')
-echo example >> /tmp/result.txt
+echo example1234 >> /tmp/result.txt
 EOS
           TimeoutSeconds 10
         end
