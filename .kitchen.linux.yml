@@ -2,7 +2,7 @@
 driver:
   name: ec2
   region: <%= ENV['AWS_REGION'] %>
-  aws_ssh_key_id: swx-test-tokyo
+  aws_ssh_key_id: <%= ENV['AWS_SSH_KEYID'] %>
   iam_profile_name: AmazonEC2RoleforSSM
 
 provisioner:
@@ -13,8 +13,6 @@ transport:
   ssh_key: ~/.ssh/swx-test-tokyo.pem
 
 platforms:
-  # - name: ubuntu-14.04
-  # - name: centos-7.2
   - name: amazon-2016.09.1
     driver:
       image_id: ami-56d4ad31

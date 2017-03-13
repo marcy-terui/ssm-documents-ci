@@ -2,7 +2,7 @@
 driver:
   name: ec2
   region: <%= ENV['AWS_REGION'] %>
-  aws_ssh_key_id: swx-test-tokyo
+  aws_ssh_key_id: <%= ENV['AWS_SSH_KEYID'] %>
   iam_profile_name: AmazonEC2RoleforSSM
 
 provisioner:
