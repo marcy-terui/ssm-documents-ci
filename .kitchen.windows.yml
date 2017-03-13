@@ -4,6 +4,8 @@ driver:
   region: <%= ENV['AWS_REGION'] %>
   aws_ssh_key_id: <%= ENV['AWS_SSH_KEYID'] %>
   iam_profile_name: AmazonEC2RoleforSSM
+  # security_group_ids:
+  #   - <%= ENV['AWS_SECURITY_GROUP_IDS'] %>
 
 provisioner:
   name: local_shell

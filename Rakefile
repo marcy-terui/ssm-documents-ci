@@ -1,5 +1,6 @@
 require "open3"
 require "rest-client"
+require "json"
 
 desc "Put diff comment to Pull request"
 task :comment_diff do
