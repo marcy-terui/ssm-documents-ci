@@ -1,9 +1,6 @@
 require "open3"
 require "rest-client"
 
-p ENV
-p `ls -l $HOME/.ssh/`
-
 desc "Put diff comment to Pull request"
 task :comment_diff do
   if ENV['CI_PULL_REQUEST'] =~ /([0-9]+)$/
