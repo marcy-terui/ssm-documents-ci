@@ -4,7 +4,7 @@ require "json"
 
 desc "Put diff comment to Pull request"
 task :comment_diff do
-  if ENV['CI_PULL_REQUEST'] =~ /([0-9]+)$/
+  if ENV['CI_PULL_REQUEST'] =~ /([0-9]+)$/ and not ENV['GITHUB_ACCESS_TOKEN'].nil?
     pr_num = $1
     out, _ = Open3.capture2e('bundle exec rezept apply --dry-run')
     comment = <<-EOS
