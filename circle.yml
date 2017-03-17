@@ -7,8 +7,8 @@ test:
   override:
     - bundle exec rake comment_diff
     - REZEPT_ENV=test bundle exec rezept apply --prefix "Test-"
-    - KITCHEN_YAML=.kitchen.linux.yml bundle exec kitchen test
-    - KITCHEN_YAML=.kitchen.windows.yml bundle exec kitchen test
+    - KITCHEN_YAML=.kitchen.linux.yml bundle exec kitchen test --destroy=always
+    - KITCHEN_YAML=.kitchen.windows.yml bundle exec kitchen test --destroy=always
 
 deployment:
   master:
